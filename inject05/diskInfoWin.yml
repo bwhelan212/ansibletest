@@ -1,0 +1,13 @@
+---
+- name: Gather System Information on Windows 10
+  hosts: win
+  tasks:
+
+    - name: Gather Disk Information
+      win_shell: |
+        Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object DeviceID, FileSystem, FreeSpace, Size
+      register: disk_info
+
+    - name: Output Disk Information
+      debug:
+        var: disk_info.stdout_lines

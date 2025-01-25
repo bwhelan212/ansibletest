@@ -1,0 +1,30 @@
+# to run use sudo ansible-playbook -i inventory linux-enum.yml
+# add vm name, ip, and root pass (for both password fields) in inventory file
+# add path to save file to in the last task
+- name: Enumerate Linux servers
+  hosts: linux_servers
+  become: yes
+  tasks:
+    - name: mounted filesystems
+        command: "mount"
+        register: mounted_filesystems
+
+    - name: disk space usage for mounted filesystems
+        command: "df -h"
+        register: disk_space
+
+    - name: detect unmounted file-systems
+        command: "cat /etc/fstab"
+        register: unmounted_filesystems
+
+     - name: Print mounted filesystems
+      debug:
+        var: mounted_filesystems.stdout
+
+    - name: Print disk space usage
+      debug:
+        var: disk_space.stdout
+
+    - name: Print unmounted filesystems
+      debug:
+        var: unmounted_filesystems.stdout

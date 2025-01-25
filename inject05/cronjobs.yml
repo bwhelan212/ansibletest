@@ -1,0 +1,33 @@
+  - name: cron_jobs on Linux servers
+    hosts: linux_servers
+    become: yes
+    tasks:
+      - name: set individual cron jobs
+        shell: "cat /etc/cron.d/*"
+        register: cron_jobs_individual
+        ignore_errors: yes
+      
+      - name: Get daily cron jobs
+        shell: "cat /etc/cron.daily/*"
+        register: daily_cron_jobs
+        ignore_errors: yes
+      
+      - name: Get hourly cron jobs
+        shell: "cat /etc/cron.hourly/*"
+        register: hourly_cron_jobs
+        ignore_errors: yes
+      
+      - name: Get weekly cron jobs
+        shell: "cat /etc/cron.weekly/*"
+        register: weekly_cron_jobs
+        ignore_errors: yes
+      
+      - name: Get monthly cron jobs
+        shell: "cat /etc/cron.monthly/*"
+        register: monthly_cron_jobs
+        ignore_errors: yes
+      
+      - name: Get system wide cron jobs
+        command: "cat /etc/crontab"
+        register: system_cron_jobs
+        ignore_errors: yes

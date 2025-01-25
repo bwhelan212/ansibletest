@@ -1,0 +1,22 @@
+# to run use sudo ansible-playbook -i inventory linux-enum.yml
+# add vm name, ip, and root pass (for both password fields) in inventory file
+# add path to save file to in the last task
+- name: Services running on Linux servers
+  hosts: linux_servers
+  become: yes
+  tasks:
+    - name: Get list of active services running
+      command: "systemctl list-units --type=service --state=running"
+      register: services_run
+    
+    - name: Get list of all services
+      command: "systemctl list-units --type=service"
+      register: services_all
+      
+    - name: Print list of active services running
+      debug:
+        var: services_run.stdout
+
+    - name: Print list of all services
+      debug:
+        var: services_all.stdout
